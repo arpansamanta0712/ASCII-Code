@@ -2,4 +2,5 @@
 
 >>I created a file name ArduinoUNOkernel.ino this is a universal project that we gonna use to run a operating system in Arduino UNO 
 >>ARPAN: Great. i am also make another repo for Llama Api in esp8266. i research and i need to use olama in order to bypass ram shortage
->>Okay you can setup the ollama I almost complete my js version which able to run the any type model directly in your browser so it comptable with any device have enough RAM
+>>Okay you can setup the ollama I almost complete my js version which able to run the any type model directly in your browser so it           comptable with any device have enough RAM.
+>>ARPAN: ok, i am thinking of creating a seperate repo for the chrts because cp sir is a collaborator here. also please do add your name      before chat.
