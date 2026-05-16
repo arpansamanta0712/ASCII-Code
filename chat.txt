@@ -1,3 +1,4 @@
 //Mini chat to talk directly from gitHUB by leaving message
 
 >>I created a file name ArduinoUNOkernel.ino this is a universal project that we gonna use to run a operating system in Arduino UNO 
+>>ARPAN: Great. i am also make another repo for Llama Api in esp8266. i research and i need to use olama in order to bypass ram shortage
