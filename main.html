@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Car Dodge Game</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            color: white;
+            overflow: hidden;
+        }
+        #gameContainer {
+            text-align: center;
+        }
+        canvas {
+            background-color: #555;
+            border: 4px solid #fff;
+            display: block;
+        }
+        h1 {
+            margin-bottom: 5px;
+        }
+        p {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="gameContainer">
+    <h1>Car Dodge Game</h1>
+    <canvas id="gameCanvas" width="400" height="500"></canvas>
+    <p>Use LEFT and RIGHT arrow keys to move.</p>
+</div>
+
+<script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // Player Car properties
+    const player = {
+        x: 180,
+        y: 420,
+        width: 40,
+        height: 70,
+        speed: 5,
+        color: "#0077ff"
+    };
+
+    // Obstacle properties
+    const obstacle = {
+        x: Math.random() * (canvas.width - 40),
+        y: -70,
+        width: 40,
+        height: 70,
+        speed: 4,
+        color: "#ff3333"
+    };
+
+    let score = 0;
+    let gameOver = false;
+
+    // Track keyboard input
+    const keys = {
+        ArrowLeft: false,
+        ArrowRight: false
+    };
+
+    window.addEventListener("keydown", (e) => {
+        if (e.key in keys) keys[e.key] = true;
+    });
+
+    window.addEventListener("keyup", (e) => {
+        if (e.key in keys) keys[e.key] = false;
+    });
+
+    // Reset obstacle when it goes off screen
+    function resetObstacle() {
+        obstacle.x = Math.random() * (canvas.width - obstacle.width);
+        obstacle.y = -obstacle.height;
+        obstacle.speed += 0.2; // Slowly make the game harder
+        score++;
+    }
+
+    // Main game update loop
+    function update() {
+        if (gameOver) return;
+
+        // Move player car
+        if (keys.ArrowLeft && player.x > 0) {
+            player.x -= player.speed;
+        }
+        if (keys.ArrowRight && player.x < canvas.width - player.width) {
+            player.x += player.speed;
+        }
+
+        // Move obstacle down
+        obstacle.y += obstacle.speed;
+        if (obstacle.y > canvas.height) {
+            resetObstacle();
+        }
+
+        // Simple collision detection box checking
+        if (player.x < obstacle.x + obstacle.width &&
+            player.x + player.width > obstacle.x &&
+            player.y < obstacle.y + obstacle.height &&
+            player.y + player.height > obstacle.y) {
+            gameOver = true;
+        }
+    }
+
+    // Main drawing loop
+    function draw() {
+        // Clear the screen for the new frame
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw road lane lines (decorative)
+        ctx.strokeStyle = "#fff";
+        ctx.setLineDash([20, 20]);
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(canvas.width / 2, 0);
+        ctx.lineTo(canvas.width / 2, canvas.height);
+        ctx.stroke();
+
+        // Draw player car
+        ctx.fillStyle = player.color;
+        ctx.fillRect(player.x, player.y, player.width, player.height);
+
+        // Draw enemy obstacle car
+        ctx.fillStyle = obstacle.color;
+        ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+
+        // Draw Score UI text
+        ctx.fillStyle = "#fff";
+        ctx.font = "20px Arial";
+        ctx.setLineDash([]); // Reset line dash so text prints cleanly
+        ctx.fillText("Score: " + score, 15, 30);
+
+        // Draw Game Over Screen text
+        if (gameOver) {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = "#fff";
+            ctx.font = "30px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2);
+            ctx.font = "20px Arial";
+            ctx.fillText("Refresh the page to restart!", canvas.width / 2, (canvas.height / 2) + 40);
+        }
+    }
+
+    // Master loop running at maximum browser frame rate
+    function gameLoop() {
+        update();
+        draw();
+        requestAnimationFrame(gameLoop);
+    }
+
+    // Start the game loop
+    gameLoop();
+</script>
+
+</body>
+</html>
