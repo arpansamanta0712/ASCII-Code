@@ -1,0 +1,3 @@
+//Mini chat to talk directly from gitHUB by leaving message
+
+>>I created a file name ArduinoUNOkernel.ino this is a universal project that we gonna use to run a operating system in Arduino UNO 
